@@ -55,8 +55,8 @@ try {
 			$womans_ids        = [];
 			foreach ($output['family_pairs'] as $family_pair) {
 				array_push($parents_pairs_ids, $family_pair['id']);
-				array_push($mans_ids, $family_pair['man_id']);
-				array_push($womans_ids, $family_pair['woman_id']);
+				array_push($mans_ids,          $family_pair['man_id']);
+				array_push($womans_ids,        $family_pair['woman_id']);
 			}
 
 			$parents_pairs_ids = implode(", ", $parents_pairs_ids);
@@ -65,15 +65,17 @@ try {
 
 			$sql = "SELECT `id`, `name` FROM `%s` WHERE `parents_pair_id` IN (%s) OR `id` IN (%s)";
 			
-			// Getting mans
+			// Getting mans from family tree
 			$sth = $dbFamilies->prepare(sprintf($sql, "mans", $parents_pairs_ids, $mans_ids));
-			$sth->execute();
-			$output['mans'] = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if ($sth->execute()) {
+				$output['mans'] = $sth->fetchAll(PDO::FETCH_ASSOC);
+			}
 
-			// Getting womans
+			// Getting womans from family tree
 			$sth = $dbFamilies->prepare(sprintf($sql, "womans", $parents_pairs_ids, $womans_ids));
-			$sth->execute();
-			$output['womans'] = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if ($sth->execute()) {
+				$output['womans'] = $sth->fetchAll(PDO::FETCH_ASSOC);
+			}
 		}
 	} else {
 		$output['error'] = "cannot find person: passed invalid sex or id";
