@@ -69,7 +69,9 @@ try {
 		}
 
 		$sth = $dbFamilies->prepare($sql);
-		$sth->execute($params);
+		if ($sth->execute($params) === FALSE) {
+			$output['error'] = "cannot create family pair: man or woman is already married";
+		}
 	} else {
 		$output['error'] = "passed invalid id";
 	}
