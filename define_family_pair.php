@@ -73,7 +73,7 @@ try {
 			$output['error'] = "cannot create family pair: man or woman is already married";
 		}
 	} else {
-		$output['error'] = "passed invalid id";
+		$output['error'] = "passed invalid man id or woman id";
 	}
 } catch (PDOException $e) {
 	$output['error'] = "cannot work with database";

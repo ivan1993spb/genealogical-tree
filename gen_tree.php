@@ -26,12 +26,12 @@ $output = [
 try {
 	$dbFamilies = new PDO(DSN, DB_USR, DB_PWD);
 
+	// Getting parents info: pair id, lft and rgt
 	$sql = sprintf("SELECT `fps`.`id`, `fps`.`lft`, `fps`.`rgt`
 			FROM `%s` AS `ps` LEFT JOIN `family_pairs` AS `fps`
 			ON `fps`.`id`=`ps`.`parents_pair_id`
 			WHERE `ps`.`id` = %d",
 		$table, intval($_GET['id']));
-
 	$sth = $dbFamilies->query($sql);
 
 	if ($sth->rowCount() === 1) {
@@ -60,8 +60,8 @@ try {
 			}
 
 			$parents_pairs_ids = implode(", ", $parents_pairs_ids);
-			$mans_ids = implode(", ", $mans_ids);
-			$womans_ids = implode(", ", $womans_ids);
+			$mans_ids          = implode(", ", $mans_ids);
+			$womans_ids        = implode(", ", $womans_ids);
 
 			$sql = "SELECT `id`, `name` FROM `%s` WHERE `parents_pair_id` IN (%s) OR `id` IN (%s)";
 			
