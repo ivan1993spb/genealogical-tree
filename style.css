@@ -7,25 +7,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-
-
 svg, iframe {
 	border: 1px dashed #aaa;
 }
-
 
 div.cblock {
 	margin-top: 40px;
 }
 
 
+div.form > div {
+	margin: 30px 0px;
+}
+
+
 a, .active {
 	color: blue;
+	text-decoration: none;
 }
 
 .active {
 	cursor: pointer;
-	text-decoration: underline;
 }
 
 a:hover, .active:hover {
@@ -39,15 +41,13 @@ a:active, .active:active {
 }
 
 
-
-
 ul li {
 	list-style-type: none;
 }
 
 ul li.page {
 	display: inline;
-	margin: 10px;
+	margin-right: 20px;
 	padding: 5px;
 }
 
@@ -62,7 +62,6 @@ li.woman:before {
 }
 
 
-
 .node rect {
 	stroke: #333;
 	fill: #fff;
@@ -74,4 +73,6 @@ li.woman:before {
 	stroke-width: 1.5px;
 }
 
-
+label {
+	font-style: italic;
+}

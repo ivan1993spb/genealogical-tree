@@ -7,7 +7,7 @@
 
 require_once "common.php";
 
-define("PAGE_SIZE", 4);
+define("PAGE_SIZE", 20);
 
 $page = 0;
 if (isset($_GET['page'])) {

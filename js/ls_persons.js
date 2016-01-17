@@ -77,32 +77,29 @@ $(function(){
 			success: function(data){
 				console.log("ls_persons req_time", data.req_time, data);
 
-				if (data.error) {
+				if (data.error && data.page_count != 0) {
 					alert("server: "+data.error);
 					return;
 				}
 
-				if (data.persons == 0) {
+				if (data.persons.length == 0) {
 					return;
 				}
 
 				$("#persons_list").empty();
 				for (var i in data.persons) {
-					var li = $("<li>")
-						.text(data.persons[i].name)
-						.addClass(data.persons[i].sex)
+					var span = $("<span/>").text(data.persons[i].name)
 
 					if (data.persons[i].has_parents == true){
-						li.click({id: data.persons[i].id}, showTree)
-							.addClass("active")
+						span.click({id: data.persons[i].id}, showTree).addClass("active")
 					}
 
-					$("#persons_list").append(li);
+					$("#persons_list").append($("<li/>").addClass(data.persons[i].sex).append(span));
 				}
 
 				$("#persons_pages").empty();
 				for (var i = 0; i < data.page_count; i++) {
-					var li = $("<li>")
+					var li = $("<li/>")
 						.text(i+1)
 						.addClass("page");
 
