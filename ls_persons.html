@@ -1,170 +1,36 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Persons. Genealogical tree</title>
+		<meta charset="utf-8">
+		<title>Person list. Genealogical tree</title>
+		<link rel="stylesheet" href="style.css">
 		<script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
-		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-		<script type="text/javascript" src="http://cpettitt.github.io/project/dagre-d3/latest/dagre-d3.js" charset="utf-8"></script>
-
-
-
-		<style id="css">
-/* This sets the color for "TK" nodes to a light blue green. */
-.node rect {
-  stroke: #333;
-  fill: #fff;
-}
-
-.edgePath path {
-  stroke: #333;
-  fill: #333;
-  stroke-width: 1.5px;
-}
-
-
-</style>
-
-
-
-
-		<script type="text/javascript">
-			$(function(){
-				showTree = function(e) {
-
-					$.ajax({
-						url: "gen_tree.php",
-						data: {id: e.data.id},
-						success: function(data){
-							console.log(data);
-
-							// Create a new directed graph
-							var g = new dagreD3.graphlib.Graph().setGraph({});
-
-							data.persons.forEach(function(person) {
-								g.setNode("p"+person.id, { label: person.name });
-							});
-
-							data.family_pairs.forEach(function(family_pair) {
-
-								g.setNode("f"+family_pair.id, {
-									label: "Family "+family_pair.id
-								});
-
-								g.setEdge(
-									"p"+family_pair.man_id,
-									"f"+family_pair.id,
-									{label: ""}
-								);
-
-								g.setEdge(
-									"p"+family_pair.woman_id,
-									"f"+family_pair.id,
-									{label: ""}
-								);
-
-								for (var i in data.persons) {
-									if (data.persons[i].parents_pair_id == family_pair.id) {
-										g.setEdge(
-											"f"+family_pair.id,
-											"p"+data.persons[i].id,
-											{label: ""}
-										);
-									}
-								}
-							});
-
-
-							// Set some general styles
-							g.nodes().forEach(function(v) {
-							  var node = g.node(v);
-							  node.rx = node.ry = 5;
-							});
-
-							// Add some custom colors based on state
-							g.node('p'+data.target_id).style = "fill: #f77";
-
-							var svg = d3.select("svg"),
-							    inner = svg.select("g");
-
-							// Set up zoom support
-							var zoom = d3.behavior.zoom().on("zoom", function() {
-							      inner.attr("transform", "translate(" + d3.event.translate + ")" +
-							                                  "scale(" + d3.event.scale + ")");
-							    });
-							svg.call(zoom);
-
-							// Create the renderer
-							var render = new dagreD3.render();
-
-							// Run the renderer. This is what draws the final graph.
-							render(inner, g);
-
-							// Center the graph
-							var initialScale = 1;
-							zoom
-							  // .translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
-							  .scale(initialScale)
-							  .event(svg);
-							// svg.attr('height', g.graph().height * initialScale + 40);
-
-						},
-					});
-
-
-				}
-
-				loadPage = function(page) {
-					$.ajax({
-						url: "ls_persons.php",
-						data: {page: page},
-						success: function(data){
-							$("#persons_list").empty();
-							$("#persons_pages").empty();
-
-							for (var i in data.persons) {
-								$("#persons_list").append($("<li>")
-										.text(data.persons[i].name)
-										.addClass(data.persons[i].sex)
-										.click({id: data.persons[i].id}, showTree)
-										)
-							}
-							for (var i = 0; i < data.page_count; i++) {
-								var li = $("<li>").text(i+1);
-								if (i == data.page) {
-									li.addClass("current");
-								} else {
-									li.click({page: i}, function(e) {
-										loadPage(e.data.page);
-									})
-								}
-								$("#persons_pages").append(li);
-							}
-						},
-					});
-				}
-
-				loadPage(0);
-			});
-		</script>
+		<script type="text/javascript" src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="//cpettitt.github.io/project/dagre-d3/latest/dagre-d3.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/ls_persons.js"></script>
 	</head>
 	<body>
-		<h1>Persons</h1>
-		<div>
-			<div><a href="add_person.html">Add persons</a></div>
-			<div><a href="ls_persons.html">Persons</a></div>
+		<h1>Person list</h1>
+		<div class="cblock">
+			<div><a href="index.html">Main page</a></div>
+			<div><a href="add_person.html">Add person</a></div>
+			<div><a href="ls_persons.html">Person list</a></div>
 			<div><a href="marry_off.html">Marry off</a></div>
 		</div>
-		<div>
-			<h2>List</h2>
+		<div class="cblock">
+			<h2>Person list</h2>
 			<div>
-				<ul id="persons_list"></ul>
+				<ul id="persons_list">
+					<li>empty</li>
+				</ul>
 			</div>
 			<div>
 				<ul id="persons_pages"></ul>
 			</div>
 		</div>
-		<div>
-			<svg width=960 height=600><g/></svg>
+		<div class="cblock" style="display: none;" id="gtree">
+			<h2>Genealogical tree</h2>
+			<svg width="600" height="600"><g/></svg>
 		</div>
 	</body>
 </html>

@@ -1,0 +1,77 @@
+body {
+	margin: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-decoration: underline;
+}
+
+
+
+
+svg, iframe {
+	border: 1px dashed #aaa;
+}
+
+
+div.cblock {
+	margin-top: 40px;
+}
+
+
+a, .active {
+	color: blue;
+}
+
+.active {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+a:hover, .active:hover {
+	color: white;
+	background: blue;
+}
+
+a:active, .active:active {
+	color: black;
+	background: yellow;
+}
+
+
+
+
+ul li {
+	list-style-type: none;
+}
+
+ul li.page {
+	display: inline;
+	margin: 10px;
+	padding: 5px;
+}
+
+li.man:before {
+	content: "\2642";
+	margin: 10px;
+}
+
+li.woman:before {
+	content: "\2640";
+	margin: 10px;
+}
+
+
+
+.node rect {
+	stroke: #333;
+	fill: #fff;
+}
+
+.edgePath path {
+	stroke: #333;
+	fill: #333;
+	stroke-width: 1.5px;
+}
+
+
