@@ -1,16 +1,73 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Genealogical tree</title>
+		<title>Marry off. Genealogical tree</title>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "single.php",
+					success: function(data){
+						for (var i in data.persons) {
+							if (data.persons[i].sex == "man") {
+								$("#form_man").append($("<option>")
+									.val(data.persons[i].id)
+									.text(data.persons[i].name));
+							} else if (data.persons[i].sex == "woman") {
+								$("#form_woman").append($("<option>")
+									.val(data.persons[i].id)
+									.text(data.persons[i].name));
+							}
+						}
+					},
+				});
+
+				$("#form_button").click(function(){
+					if (!$("#form_man").val().length || !$("#form_woman").val().length) {
+						alert("error: select man and woman");
+						return;
+					}
+
+					$.ajax({
+						url: "define_family_pair.php",
+						data: {
+							'man_id': $("#form_man").val(),
+							'woman_id': $("#form_woman").val()
+						},
+						success: function(data){
+							$('#form_man').prop('selectedIndex',0);
+							$('#form_woman').prop('selectedIndex',0);
+							alert("Success");
+						},
+					});
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<h1>Marry off</h1>
 		<div>
-			<div><a href="/">Persons</a></div>
+			<div><a href="add_person.html">Add persons</a></div>
+			<div><a href="ls_persons.html">Persons</a></div>
 			<div><a href="marry_off.html">Marry off</a></div>
 		</div>
 		<div>
-			<div>Man: <select></select> and Woman: <select></select></div>
+			<h2>Form</h2>
+			<div>
+				<div>
+					<b>Man:</b>
+					<select id="form_man">
+						<option value="">chouse man</option>
+					</select>
+				</div>
+				<div>
+					<b>Woman:</b>
+					<select id="form_woman">
+						<option value="">chouse woman</option>
+					</select>
+				</div>
+				<div><button id="form_button">Submit</button></div>
+			</div>
 		</div>
 	</body>
 </html>

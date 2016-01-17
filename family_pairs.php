@@ -13,7 +13,7 @@ try {
 		FROM `mans`, `womans`, `family_pairs`
 		WHERE `mans`.`id`=`family_pairs`.`man_id` AND `womans`.`id`=`family_pairs`.`woman_id`");
 
-	$output['persons'] = $sth->fetchAll(PDO::FETCH_ASSOC);
+	$output['family_pairs'] = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
 	$output['error'] = "cannot work with database";

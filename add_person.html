@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Persons. Genealogical tree</title>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "family_pairs.php",
+					success: function(data){
+						for (var i in data.family_pairs) {
+							console.log()
+							$("#form_parents").append($("<option>")
+								.text(data.family_pairs[i].man_name+" and "
+									+data.family_pairs[i].woman_name)
+								.val(data.family_pairs[i].id));
+						}
+					},
+				});
+
+				$("#form_button").click(function(){
+					if ($("#form_name").val().length == 0) {
+						alert("error: empty name");
+						return;
+					}
+
+					var data = {
+						'name': $("#form_name").val(),
+						'sex':  $("#form_sex").val()
+					};
+
+					if ($("#form_parents").val()) {
+						data['parents_pair_id'] = $("#form_parents").val();
+					}
+
+					$.ajax({
+						url: "add_person.php",
+						data: data,
+						success: function(data){
+							$("#form_name").val("");
+							$('#form_sex').prop('selectedIndex',0);
+							$('#form_parents').prop('selectedIndex',0);
+							alert("Success");
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Persons</h1>
+		<div>
+			<div><a href="add_person.html">Add persons</a></div>
+			<div><a href="ls_persons.html">Persons</a></div>
+			<div><a href="marry_off.html">Marry off</a></div>
+		</div>
+		<div>
+			<h2>Add person</h2>
+			<div>
+				<div>
+					<b>Name:</b>
+					<input id="form_name"/>
+				</div>
+				<div>
+					<b>Sex:</b>
+					<select id="form_sex">
+						<option value="man">male</option>
+						<option value="woman">female</option>
+					</select>
+				</div>
+				<div>
+					<b>Parents:</b>
+					<select id="form_parents">
+						<option value="">Parents</option>
+					</select>
+				</div>
+				<div>
+					<button id="form_button">Submit</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
