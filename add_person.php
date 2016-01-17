@@ -1,4 +1,9 @@
 <?php
+/*
+	Script adds new person
+
+	Input: name, sex and parents pair id (optional)
+*/
 
 require_once "common.php";
 

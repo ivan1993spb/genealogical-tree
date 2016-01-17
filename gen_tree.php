@@ -1,4 +1,10 @@
 <?php
+/*
+	Script returns JSON lists of nodes for genealogical tree for a person
+	Nodes are persons and family pairs
+
+	Input: person id
+*/
 
 require_once "common.php";
 
@@ -89,7 +95,7 @@ try {
 					}
 				}
 
-				// Create children
+				// Get children of trusted pairs
 				foreach ($persons as $person) {
 					// Push if person is child of one of the trusted pairs and was not added yet
 					if (in_array($person['parents_pair_id'], $trusted_pairs_ids) &&

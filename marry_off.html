@@ -5,22 +5,31 @@
 		<script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				$.ajax({
-					url: "single.php",
-					success: function(data){
-						for (var i in data.persons) {
-							if (data.persons[i].sex == "man") {
-								$("#form_man").append($("<option>")
-									.val(data.persons[i].id)
-									.text(data.persons[i].name));
-							} else if (data.persons[i].sex == "woman") {
-								$("#form_woman").append($("<option>")
-									.val(data.persons[i].id)
-									.text(data.persons[i].name));
+				var updateSingle = function() {
+					$('#form_man')
+						.empty()
+						.append('<option value="">chouse man</option>');
+					$('#form_woman')
+						.empty()
+						.append('<option value="">chouse woman</option>');
+
+					$.ajax({
+						url: "single.php",
+						success: function(data){
+							for (var i in data.persons) {
+								if (data.persons[i].sex == "man") {
+									$("#form_man").append($("<option>")
+										.val(data.persons[i].id)
+										.text(data.persons[i].name));
+								} else if (data.persons[i].sex == "woman") {
+									$("#form_woman").append($("<option>")
+										.val(data.persons[i].id)
+										.text(data.persons[i].name));
+								}
 							}
-						}
-					},
-				});
+						},
+					});
+				}
 
 				$("#form_button").click(function(){
 					if (!$("#form_man").val().length || !$("#form_woman").val().length) {
@@ -35,12 +44,15 @@
 							'woman_id': $("#form_woman").val()
 						},
 						success: function(data){
-							$('#form_man').prop('selectedIndex',0);
-							$('#form_woman').prop('selectedIndex',0);
+
 							alert("Success");
+
+							updateSingle();
 						},
 					});
 				});
+
+				updateSingle();
 			});
 		</script>
 	</head>
@@ -56,15 +68,11 @@
 			<div>
 				<div>
 					<b>Man:</b>
-					<select id="form_man">
-						<option value="">chouse man</option>
-					</select>
+					<select id="form_man"></select>
 				</div>
 				<div>
 					<b>Woman:</b>
-					<select id="form_woman">
-						<option value="">chouse woman</option>
-					</select>
+					<select id="form_woman"></select>
 				</div>
 				<div><button id="form_button">Submit</button></div>
 			</div>

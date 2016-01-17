@@ -1,4 +1,9 @@
 <?php
+/*
+	Script adds new family if it possible or returns error
+
+	Input: man id and woman id
+*/
 
 require_once "common.php";
 
@@ -12,6 +17,7 @@ $output = [];
 try {
 	$dbFamilies = new PDO(DSN, DB_USR, DB_PWD);
 
+	// Select mans and womans parents data
 	$sql =
 		"SELECT
 			`mans`.`parents_pair_id` as `man_parents_pair_id`,
@@ -39,6 +45,7 @@ try {
 	if ($sth->rowCount() === 1) {
 		$parentsPairs = $sth->fetch(PDO::FETCH_ASSOC);
 
+		// Check are they brother and sister
 		if ($parentsPairs['man_parents_pair_id'] !== $parentsPairs['woman_parents_pair_id'] ||
 			(empty($parentsPairs['man_parents_pair_id']) && empty($parentsPairs['woman_parents_pair_id']))) {
 

@@ -1,4 +1,7 @@
 <?php
+/*
+	Script returns JSON with list of single persons
+*/
 
 require_once "common.php";
 

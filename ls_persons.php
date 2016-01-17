@@ -1,4 +1,9 @@
 <?php
+/*
+	Script returns JSON with list of persons
+
+	Input: page number
+*/
 
 require_once "common.php";
 
@@ -18,8 +23,8 @@ try {
 	$output['page_count'] = $page_count;
 
 	if ($page < $page_count) {
-		$sql = sprintf("SELECT `id`, `name`, `sex` FROM `persons`
-			LIMIT %d, %d", $page*PAGE_SIZE, PAGE_SIZE);
+		$sql = sprintf("SELECT `id`, `name`, `sex`, (`parents_pair_id` IS NOT NULL) AS `has_parents`
+			FROM `persons` LIMIT %d, %d", $page*PAGE_SIZE, PAGE_SIZE);
 		$output['persons'] = $dbFamilies->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 	} else {
 		$output['error'] = "passed invalid page";

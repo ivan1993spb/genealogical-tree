@@ -1,4 +1,7 @@
 <?php
+/*
+	Script returns JSON with list of family pairs
+*/
 
 require_once "common.php";
 
