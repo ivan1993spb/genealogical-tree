@@ -7,7 +7,7 @@ Genealogical tree
 $ # 1. clone code
 $ git clone https://github.com/ivan1993spb/genealogical-tree.git
 
-$ # 2. build application image
+$ # 2. build image
 $ cd genealogical-tree
 $ sudo docker build -t "genealogical-tree" .
 
