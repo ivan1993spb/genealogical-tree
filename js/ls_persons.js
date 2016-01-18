@@ -82,7 +82,7 @@ $(function(){
 					return;
 				}
 
-				if (data.persons.length == 0) {
+				if (data.page_count == 0) {
 					return;
 				}
 
